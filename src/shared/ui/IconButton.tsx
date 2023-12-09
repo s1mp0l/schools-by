@@ -1,17 +1,21 @@
-import React, {ReactNode} from 'react';
-import {Pressable, StyleSheet} from "react-native";
+import {ReactNode} from 'react';
+import {GestureResponderEvent, StyleSheet, TouchableOpacity} from "react-native";
 
-export const IconButton = ({ children }: { children: ReactNode }) => {
+interface Props {
+    children: ReactNode,
+    onPress?: ((event: GestureResponderEvent) => void) | undefined
+}
+
+export const IconButton = ({ children, onPress }: Props) => {
     return (
-        <Pressable style={styles.iconBtn}>
+        <TouchableOpacity onPress={onPress ?? (()=>{})} style={styles.iconBtn}>
             {children}
-        </Pressable>
+        </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
     iconBtn: {
-        alignItems: 'center',
         justifyContent: 'center',
     },
 })
