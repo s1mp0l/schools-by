@@ -1,9 +1,9 @@
+import React from "react";
 import {NavigationContainer} from "@react-navigation/native";
 import {ProgressNavigator} from "../processes/progress/ProgressNavigator";
 import {DiaryNavigator} from "../processes/diary/DiaryNavigator";
 import {ProfileNavigator} from "../processes/profile/ProfileNavigator";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import React from "react";
 import DiarySvg from "../../assets/icons/book.svg";
 import MarksSvg from "../../assets/icons/trending-up.svg";
 import ProfileSvg from "../../assets/icons/user.svg";
@@ -29,8 +29,14 @@ export function Navigation() {
       <Tab.Navigator
         screenOptions={{
           tabBarStyle: {
+            paddingVertical: 5,
             backgroundColor: CustomColors.secondary,
           },
+          tabBarLabelStyle: {
+            paddingBottom: 5
+          },
+          tabBarInactiveTintColor: 'white',
+          tabBarActiveTintColor: CustomColors.primary,
           headerShown: false,
           // tabBarShowLabel: false
         }}

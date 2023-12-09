@@ -18,8 +18,10 @@ export const DiaryMonthPage = () => {
   return (
     <DiaryLayout>
       <CalendarList
+        scrollRange={10}
         calendarProps={{
-          customHeader: getHeaderText
+          customHeader: getHeaderText,
+          displayLoadingIndicator: true,
         }}/>
     </DiaryLayout>
   );

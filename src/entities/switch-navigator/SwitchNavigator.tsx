@@ -1,6 +1,5 @@
 import {View} from "react-native";
 import {CustomColors} from "../../shared/lib/constants";
-import {Colors} from "react-native/Libraries/NewAppScreen";
 import SwitchSelector from "react-native-switch-selector";
 
 type Props = {
@@ -16,8 +15,8 @@ export const SwitchNavigator = ({options, onPressHandler, value}: Props) => {
         initial={value || 0}
         backgroundColor={CustomColors.primary}
         textColor={CustomColors.lightGray}
-        selectedColor={Colors.black}
-        buttonColor={Colors.white}
+        selectedColor={'black'}
+        buttonColor={'white'}
         hasPadding
         valuePadding={5}
         options={options}

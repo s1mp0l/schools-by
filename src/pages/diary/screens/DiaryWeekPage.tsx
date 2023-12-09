@@ -4,10 +4,10 @@ import {DiaryLayout} from "../components/DiaryLayout";
 
 
 export const DiaryWeekPage = () => {
-  const weekDaysLength = 5;
+  const weekDays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
 
-  const weekDaysItems = [...Array(weekDaysLength).keys()].map((i) =>
-    <WeekDay key={`weekDay${i}`}/>
+  const weekDaysItems = weekDays.map((t, i) =>
+    <WeekDay key={`weekDay${i}`} title={t} lessons={[]}/>
   )
 
   return (

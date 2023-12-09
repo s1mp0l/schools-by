@@ -16,7 +16,7 @@ export const PageLayout = ({children}: Props) => {
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 20,
-    paddingHorizontal: 30,
+    paddingHorizontal: 10,
     justifyContent: 'center',
     gap: 10,
   },

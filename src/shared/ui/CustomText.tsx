@@ -1,9 +1,10 @@
-import {ColorValue, StyleSheet, Text} from "react-native";
+import {ColorValue, StyleProp, StyleSheet, Text, TextStyle} from "react-native";
 
 interface Props {
   text: string;
-  type: 'main' | 'title' | 'subTitle' | 'paragraph' | 'small'
-  color?: ColorValue | undefined
+  type: 'main' | 'title' | 'subTitle' | 'paragraph' | 'small';
+  color?: ColorValue | undefined;
+  styles?: StyleProp<TextStyle>;
 }
 
 export const CustomText = ({text, type, color}: Props) => {

@@ -1,16 +1,22 @@
 import {View} from "react-native";
 import {WeekDayLesson} from "./WeekDayLesson";
+import {CustomText} from "../../../shared/ui/CustomText";
 
-export const WeekDay = () => {
+interface Props {
+  title: string;
+  lessons: any;
+}
+
+export const WeekDay = ({title}: Props) => {
   const lessonsLength = 8;
 
   const lessons = [
-    {subject: 'Математика', mark: 8, hometask: 'Упр. 10, 12, 21: стр. 22'},
-    {subject: 'Англ. яз', mark: null, hometask: 'Упр. 5 стр. 22'},
-    {subject: 'Руск. яз', mark: null, hometask: null},
-    null,
-    null,
-    null,
+    {time: new Date(Date.now()), subject: 'Математика', mark: 8, hometask: 'Упр. 10, 12, 21: стр. 22', classroom: '123'},
+    {subject: 'Англ. яз', mark: null, hometask: 'Упр. 5 стр. 22', classroom: '200'},
+    {time: new Date(Date.now()), subject: 'Руск. яз', mark: null, hometask: null},
+    {time: new Date(Date.now()), subject: 'Математика', mark: 3, hometask: 'Упр. 10, 12, 21: стр. 22', classroom: '123'},
+    {subject: 'Англ. яз', mark: null, hometask: 'Упр. 5 стр. 22', classroom: '200'},
+    {time: new Date(Date.now()), subject: 'Руск. яз', mark: 5, hometask: null},
     null,
     null
   ];
@@ -20,8 +26,11 @@ export const WeekDay = () => {
   );
 
   return (
-    <View style={{width: '45%'}}>
-      {lessonsItems}
+    <View style={{width: '45%', alignItems: 'center', gap: 10}}>
+      <CustomText text={title} type={'title'} />
+      <View>
+        {lessonsItems}
+      </View>
     </View>
   );
 };

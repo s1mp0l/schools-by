@@ -1,9 +1,10 @@
-import {View} from "react-native";
+import {ProgressYearTable} from "../components/ProgressYearTable";
+import {PageLayout} from "../../../shared/ui/PageLayout";
 
 export const ProgressYearPage = () => {
   return (
-    <View>
-
-    </View>
+    <PageLayout>
+      <ProgressYearTable />
+    </PageLayout>
   );
 };

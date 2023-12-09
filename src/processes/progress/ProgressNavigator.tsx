@@ -19,17 +19,17 @@ export const ProgressNavigator = () => {
       screenOptions={navigatorScreenOptions}
     >
       <ProgressTab.Screen
-        name={'Current'}
-        component={ProgressCurrentPage}
-        options={{
-          title: 'Текущая'
-        }}
-      />
-      <ProgressTab.Screen
         name={'Year'}
         component={ProgressYearPage}
         options={{
           title: 'Итоги'
+        }}
+      />
+      <ProgressTab.Screen
+        name={'Current'}
+        component={ProgressCurrentPage}
+        options={{
+          title: 'Текущая'
         }}
       />
     </ProgressTab.Navigator>

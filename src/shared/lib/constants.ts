@@ -16,6 +16,7 @@ export const navigatorScreenOptions = {
   headerStyle: {
     backgroundColor: CustomColors.secondary,
   },
+  headerTintColor: 'white',
   headerBackTitleVisible: false,
   // headerTitle: (props) => {
   //   return <CustomText text={props.children} type={'main'} color={'white'} />;
