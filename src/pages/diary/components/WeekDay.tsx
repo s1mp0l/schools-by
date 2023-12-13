@@ -1,5 +1,5 @@
 import {View} from "react-native";
-import {WeekDayLesson} from "./WeekDayLesson";
+import {WeekDayLesson} from "../../../entities/lesson/components/WeekDayLesson";
 import {CustomText} from "../../../shared/ui/CustomText";
 
 interface Props {

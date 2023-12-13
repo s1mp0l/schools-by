@@ -1,5 +1,4 @@
 import React from "react";
-import {NavigationContainer} from "@react-navigation/native";
 import {ProgressNavigator} from "../processes/progress/ProgressNavigator";
 import {DiaryNavigator} from "../processes/diary/DiaryNavigator";
 import {ProfileNavigator} from "../processes/profile/ProfileNavigator";
@@ -12,6 +11,8 @@ import MarksSvgActive from "../../assets/icons/trending-up-active.svg";
 import ProfileSvgActive from "../../assets/icons/user-active.svg";
 import {CustomColors} from "../shared/lib/constants";
 import {ProgressTeacherNavigator} from "../processes/progress/ProgressTeacherNavigator";
+import {useAppSelector} from "./hooks";
+import {RootState} from "./store";
 
 export type RootTabParamList = {
   DiaryStack: undefined,
@@ -21,12 +22,13 @@ export type RootTabParamList = {
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
-export function Navigation() {
-  const isTeacher = false;
+export function MainNavigation() {
+  const {data} = useAppSelector((state: RootState) => state.user);
+  const isTeacher = data.user.userType === 'teacher';
 
   return (
-    <NavigationContainer>
       <Tab.Navigator
+        initialRouteName={'ProfileStack'}
         screenOptions={{
           tabBarStyle: {
             paddingVertical: 5,
@@ -72,6 +74,5 @@ export function Navigation() {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 }

@@ -1,36 +1,46 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {ProgressSubjectDetailPage} from "../../pages/progress/screens/ProgressSubjectDetailPage";
-import {ChooseClass} from "../../pages/progress/components/ChooseClass";
-import {ChooseStudent} from "../../pages/progress/components/ChooseStudent";
+import {ChooseClassPage} from "../../pages/progress/screens/ChooseClassPage";
+import {ChooseStudentPage} from "../../pages/progress/screens/ChooseStudentPage";
 import {navigatorScreenOptions} from "../../shared/lib/constants";
+import {ChooseSubjectPage} from "../../pages/progress/screens/ChooseSubjectPage";
+import ChooseLessonPage from "../../pages/progress/screens/ChooseLessonPage";
+import AddMarkPage from "../../entities/mark/components/AddMarkPage";
 
-export type DiaryDayNavigatorParamList = {
-  Home: undefined,
-  Lesson: undefined,
+export type TeacherNavigatorParamList = {
+  ChooseSubject: undefined,
+  ChooseClass: undefined,
+  ChooseStudent: undefined,
+  SubjectDetail: undefined,
+  ChooseLesson: undefined,
+  AddMark: undefined
 };
 
 const ProgressTeacherStack = createNativeStackNavigator();
 
 export const ProgressTeacherNavigator = () => {
   return (
-    <ProgressTeacherStack.Navigator screenOptions={navigatorScreenOptions}>
-      {/*<ProgressTeacherStack.Screen*/}
-      {/*  name={"Home"}*/}
-      {/*  component={ProgressSubjectsListPage}*/}
-      {/*  options={{*/}
-      {/*    title: 'Выберите предмет'*/}
-      {/*  }}*/}
-      {/*/>*/}
+    <ProgressTeacherStack.Navigator
+      screenOptions={navigatorScreenOptions}
+      initialRouteName={"ChooseSubject"}
+    >
       <ProgressTeacherStack.Screen
-        name={"Home"}
-        component={ChooseClass}
+        name={"ChooseSubject"}
+        component={ChooseSubjectPage}
+        options={{
+          title: 'Выберите предмет'
+        }}
+      />
+      <ProgressTeacherStack.Screen
+        name={"ChooseClass"}
+        component={ChooseClassPage}
         options={{
           title: 'Выберите класс',
         }}
       />
       <ProgressTeacherStack.Screen
         name={"ChooseStudent"}
-        component={ChooseStudent}
+        component={ChooseStudentPage}
         options={{
           title: 'Выберите ученика',
         }}
@@ -40,6 +50,20 @@ export const ProgressTeacherNavigator = () => {
         component={ProgressSubjectDetailPage}
         options={{
           title: 'Предмет',
+        }}
+      />
+      <ProgressTeacherStack.Screen
+        name={"ChooseLesson"}
+        component={ChooseLessonPage}
+        options={{
+          title: 'Выберите урок',
+        }}
+      />
+      <ProgressTeacherStack.Screen
+        name={"AddMark"}
+        component={AddMarkPage}
+        options={{
+          title: 'Выставление оценки',
         }}
       />
     </ProgressTeacherStack.Navigator>

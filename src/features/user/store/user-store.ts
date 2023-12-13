@@ -4,29 +4,34 @@ import {fetchUser, updateNoteSeenStatus} from "./user-thunks";
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: {} as UserData,
-    loading: false
+    data: {} as UserUnionData,
+    loading: false,
+    authError: '',
   },
   reducers: {
-    setUser(state, action: PayloadAction<UserData>) {
-      state.user = action.payload;
+    setUser(state, action: PayloadAction<UserUnionData>) {
+      state.data = action.payload;
     }
   },
   extraReducers: builder => {
     builder.addCase(fetchUser.pending, state => {
-      state.loading = true
+      state.loading = true;
     })
     builder.addCase(fetchUser.fulfilled, (state, action) => {
-      state.user = action.payload
-      state.loading = false
+      state.data = action.payload;
+      state.loading = false;
     })
-    builder.addCase(fetchUser.rejected, state => {
-      state.loading = false
+    builder.addCase(fetchUser.rejected, (state, action) => {
+      state.loading = false;
+      if (action.payload) {
+        state.authError = action.payload as string;
+      } else {
+        state.authError = action.error.message || '';
+      }
     })
     builder.addCase(updateNoteSeenStatus.fulfilled, (state, action) => {
-      const userNotes = state.user.notes as NoteData[];
-      const newNotes = userNotes.map(n => n.id !== action.payload.id ? n : action.payload)
-      state.user = {...state.user, notes: newNotes}
+      const userNotes = state.data.user.notes as NoteData[];
+      state.data.user.notes = userNotes.map(n => n.id !== action.payload.id ? n : action.payload)
       state.loading = false
     })
   }

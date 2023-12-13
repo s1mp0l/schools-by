@@ -4,7 +4,7 @@ export const CustomColors = {
   primary: '#007AFF',
   secondary: '#8EC4FF',
   secondaryLight: '#CEE1F6',
-  baseGray: '#e0e0e0',
+  baseGray: '#B6B6B6',
   lightGray: '#F0F0F0',
   darkGray: '#676767',
   error: '#FA3C6A',

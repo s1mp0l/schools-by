@@ -1,5 +1,4 @@
 import {useEffect} from "react";
-import {fetchUser} from "./store/user-thunks";
 import {ActivityIndicator, Image, StyleSheet, View} from "react-native";
 import {RootState} from "../../app/store";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
@@ -22,13 +21,11 @@ type Props = {
 };
 
 export const User = ({navigation}: Props) => {
-  const dispatch = useAppDispatch();
-  const {user, loading} = useAppSelector((state: RootState) => state.user)
+  const {data, loading} = useAppSelector((state: RootState) => state.user);
 
-  const userId = 7;
+  const user = data.user;
 
   useEffect(() => {
-    dispatch(fetchUser(userId));
     navigation.setOptions({
       headerRight: () => (
         <IconButton onPress={() => navigation.navigate('UserNotes')}>

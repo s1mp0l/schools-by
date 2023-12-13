@@ -1,5 +1,5 @@
 import {View} from "react-native";
-import {DayLesson} from "./DayLesson";
+import {DayLesson} from "../../../entities/lesson/components/DayLesson";
 
 export const DayDetailView = () => {
   const lessonsLength = 8;

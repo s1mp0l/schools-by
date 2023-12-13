@@ -6,9 +6,10 @@ interface Props {
   color?: ColorValue | undefined;
   size: number;
   isRectangle?: boolean;
+  isAddMark?: boolean;
 }
 
-export const MarkCircle = ({mark, color, size, isRectangle}: Props) => {
+export const MarkCircle = ({mark, color, size, isRectangle, isAddMark}: Props) => {
   const circleColor = mark >= 4 ? mark >= 7 ?
     CustomColors.success : CustomColors.warn : CustomColors.error;
 
@@ -21,10 +22,10 @@ export const MarkCircle = ({mark, color, size, isRectangle}: Props) => {
       height: size
     }}>
       <Text style = {{
-        ...styles.mark,
+        color: 'white',
         fontSize: Math.floor(size / 2)
       }}>
-        {mark.toString()}
+        {isAddMark ? '+' : mark.toString()}
       </Text>
     </View>
   );
@@ -35,7 +36,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  mark: {
-    color: 'white'
-  }
 })
