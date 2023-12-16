@@ -6,34 +6,59 @@ import {StackNavigationProp} from "@react-navigation/stack";
 import {TeacherNavigatorParamList} from "../../../processes/progress/ProgressTeacherNavigator";
 import {PageLayout} from "../../../shared/ui/PageLayout";
 import {setSelectedSubject} from "../../../features/progress/store/progress-store";
+import {useEffect} from "react";
+import {fetchAllStudentMarks} from "../../../features/progress/store/progress-thunks";
+import {ProgressCurrentParamList} from "../../../processes/progress/ProgressCurrentNavigator";
 
 type TeacherNavigationProp = StackNavigationProp<
   TeacherNavigatorParamList,
   'ChooseSubject'
 >;
 
+type ProgressCurrentNavigationProp = StackNavigationProp<
+  ProgressCurrentParamList,
+  'ChooseSubject'
+>;
+
 type Props = {
-  navigation: TeacherNavigationProp;
+  navigation: TeacherNavigationProp | ProgressCurrentNavigationProp;
 };
 
 export const ChooseSubjectPage = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
 
-  const {data} = useAppSelector((state: RootState) => state.user);
-  const subjects = (data as TeacherData).subjects;
+  const {data, isTeacher} = useAppSelector((state: RootState) => state.user);
+  const {studentSubjects, selectedStudent} =
+    useAppSelector((state: RootState) => state.progress);
+
+  const studentId = isTeacher ? selectedStudent.id : (data as StudentData).id;
+  console.log(studentId)
+  useEffect(() => {
+    if (!studentId) return;
+    dispatch(fetchAllStudentMarks(studentId));
+  }, [studentId]);
 
   const onPressHandler = (s: SubjectData) => {
     dispatch(setSelectedSubject(s));
-    navigation.navigate('ChooseClass');
+    if (isTeacher) (navigation as TeacherNavigationProp).navigate('SubjectDetail');
+    else (navigation as ProgressCurrentNavigationProp).navigate('SubjectDetail');
   }
+
+  const subjects = isTeacher ?
+    (data as TeacherData).subjects.map(s => {
+      return studentSubjects.find(sb => sb.id === s.id) ||
+        {...s, marks: [], yearMark: 0, currentSemesterMark: 0, semesterMarks: []} as SubjectWithYearMarks
+    }) :
+    studentSubjects;
 
   return (
     <PageLayout>
       <FlatList
         contentContainerStyle={{gap: 20}}
         data={subjects}
-        renderItem={({item}) =>
-          <ChooseSubjectItem subject={item} key={item.title} onPressHandler={onPressHandler} />}
+        extraData={selectedStudent}
+        renderItem={({item, index}) =>
+          <ChooseSubjectItem subject={item} key={`${item.title} ${index}`} onPressHandler={onPressHandler} />}
       />
     </PageLayout>
   );

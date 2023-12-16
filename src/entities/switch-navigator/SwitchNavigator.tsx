@@ -6,13 +6,15 @@ type Props = {
   options: any[],
   onPressHandler?: (value: string) => void;
   value?: number;
+  index?: number;
 }
 
-export const SwitchNavigator = ({options, onPressHandler, value}: Props) => {
+export const SwitchNavigator = ({options, onPressHandler, value, index}: Props) => {
   return (
     <View style={{paddingHorizontal: options.length > 2 ? 20 : 60, marginVertical: 10}}>
       <SwitchSelector
-        initial={value || 0}
+        initial={0}
+        value={value || 0}
         backgroundColor={CustomColors.primary}
         textColor={CustomColors.lightGray}
         selectedColor={'black'}

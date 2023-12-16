@@ -1,36 +1,33 @@
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {CustomText} from "../../../shared/ui/CustomText";
-import {MarkCircle} from "../../../shared/ui/MarkCircle";
 import {CustomColors} from "../../../shared/lib/constants";
+import ProgressYearMarksList from "./ProgressYearMarksList";
+import {useAppDispatch} from "../../../app/hooks";
+import {setSelectedSubject} from "../../../features/progress/store/progress-store";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {ProgressTabParamList} from "../../../processes/progress/ProgressNavigator";
+import {CompositeScreenProps, useNavigation} from "@react-navigation/native";
+import {BottomTabNavigationProp, BottomTabScreenProps} from "@react-navigation/bottom-tabs";
+import {NativeStackScreenProps} from "@react-navigation/native-stack";
 
 interface Props {
-  subject: any;
+  subject: SubjectWithYearMarks;
+  onRowPress: (subject: SubjectData) => void;
 }
 
-export const ProgressYearRow = ({subject}: Props) => {
-  const markSize = 30;
 
+export const ProgressYearRow = ({subject, onRowPress}: Props) => {
   return (
-    <View style={styles.rowContainer}>
-      <View style={{flex: 4}}>
-        <CustomText text={subject?.title} type={'subTitle'} />
+    <TouchableOpacity onPress={() => onRowPress(subject)}>
+      <View style={styles.rowContainer}>
+        <View style={{flex: 3}}>
+          <CustomText text={subject?.title} type={'subTitle'} />
+        </View>
+        <View style={{flex: 5}}>
+          <ProgressYearMarksList data={subject} markSize={30}/>
+        </View>
       </View>
-      <View style={{flex: 1}}>
-        <MarkCircle mark={1} size={markSize} />
-      </View>
-      <View style={{flex: 1}}>
-        <MarkCircle mark={9} size={markSize} />
-      </View>
-      <View style={{flex: 1}}>
-        <MarkCircle mark={4} size={markSize} />
-      </View>
-      <View style={{flex: 1}}>
-        <MarkCircle mark={7} size={markSize} />
-      </View>
-      <View style={{flex: 1}}>
-        <MarkCircle mark={5} size={markSize} />
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

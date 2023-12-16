@@ -4,15 +4,16 @@ import {CustomText} from "../../../shared/ui/CustomText";
 import {MarkCircle} from "../../../shared/ui/MarkCircle";
 
 interface WeekDayLessonProps {
-  lesson: any
+  lesson: LessonWithMark | null
 }
 
 export const WeekDayLesson = ({lesson}: WeekDayLessonProps) => {
+  const hasHomeTask = lesson?.task?.trim()?.length;
   return (
     <View style={styles.container}>
       <View style={styles.subjectContainer}>
-        <CustomText text={lesson?.subject} type={'small'} />
-        {!!lesson?.hometask ? <View style={styles.hometaskIndicator}></View> : <></>}
+        <CustomText text={lesson?.subject?.toString() || ''} type={'small'} />
+        {hasHomeTask ? <View style={styles.hometaskIndicator}></View> : <></>}
       </View>
       <View style={styles.markContainer}>
         {lesson?.mark ? <MarkCircle mark={lesson?.mark} isRectangle={true} size={25} /> : <></>}

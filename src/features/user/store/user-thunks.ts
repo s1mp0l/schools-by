@@ -29,3 +29,16 @@ export const updateNoteSeenStatus = createAsyncThunk(
     const response = await fetch(`${baseApiUrl}/note?id=${noteId}`, {method: 'PUT'});
     return (await response.json()) as NoteData;
   });
+
+export const fetchAllTeachers = createAsyncThunk<
+  TeacherData[]
+>(
+  'user/fetchAllTeachers', async () => {
+
+    const response = await API.request({
+      path: 'teachers',
+      method: 'GET',
+    });
+
+    return (await response.json()) as TeacherData[];
+  });

@@ -21,8 +21,9 @@ type Props = {
 };
 
 export const AuthPage = ({ navigation }: Props) => {
-  const loginPlaceholder = 'dubrovina123';
-  const passwordPlaceholder = '12345667';
+  const teacher = false;
+  const loginPlaceholder = (teacher ? 'teacher' : 'student') + 'Login1';
+  const passwordPlaceholder = (teacher ? 'teacher' : 'student') + 'Password1';
 
   const dispatch = useAppDispatch();
   const {data, loading, authError} = useAppSelector((state: RootState) => state.user);
@@ -56,8 +57,17 @@ export const AuthPage = ({ navigation }: Props) => {
   return (
     <PageLayout>
       <Image source={LogoImage} style={{alignSelf: 'center'}}/>
-      <CustomInputText label={'Логин'} onChangeText={onChangeLogin} placeholder={loginPlaceholder}/>
-      <CustomInputText label={'Пароль'} onChangeText={onChangePassword} placeholder={passwordPlaceholder}/>
+      <CustomInputText
+        label={'Логин'}
+        onChangeText={onChangeLogin}
+        placeholder={loginPlaceholder}
+      />
+      <CustomInputText
+        label={'Пароль'}
+        onChangeText={onChangePassword}
+        placeholder={passwordPlaceholder}
+        textContentType={'password'}
+      />
 
       <CustomText text={errorMessage} type={'subTitle'} color={CustomColors.error}/>
 

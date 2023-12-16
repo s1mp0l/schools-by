@@ -39,7 +39,14 @@ class Api implements IBaseAPI {
       fullPath += paramsString;
     }
 
-    const init: RequestInit = {body, method: method ?? 'GET', credentials: 'include'};
+    console.log(fullPath)
+
+    const init: RequestInit = {
+      body,
+      method: method ?? 'GET',
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'}
+    };
 
     return await fetch(fullPath, init);
   }

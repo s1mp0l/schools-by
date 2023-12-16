@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/ngrok": "^2.5.0",
     "@expo/webpack-config": "^19.0.0",
     "@react-navigation/bottom-tabs": "^6.5.9",
     "@react-navigation/native": "^6.1.8",
@@ -38,7 +39,8 @@
     "@types/react": "^18.2.21",
     "@types/react-redux": "^7.1.27",
     "@types/react-test-renderer": "^18.0.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "@expo/ngrok": "^4.1.0"
   },
   "private": true
 }

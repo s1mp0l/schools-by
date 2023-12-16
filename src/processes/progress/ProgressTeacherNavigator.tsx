@@ -16,21 +16,14 @@ export type TeacherNavigatorParamList = {
   AddMark: undefined
 };
 
-const ProgressTeacherStack = createNativeStackNavigator();
+const ProgressTeacherStack = createNativeStackNavigator<TeacherNavigatorParamList>();
 
 export const ProgressTeacherNavigator = () => {
   return (
     <ProgressTeacherStack.Navigator
       screenOptions={navigatorScreenOptions}
-      initialRouteName={"ChooseSubject"}
+      initialRouteName={"ChooseClass"}
     >
-      <ProgressTeacherStack.Screen
-        name={"ChooseSubject"}
-        component={ChooseSubjectPage}
-        options={{
-          title: 'Выберите предмет'
-        }}
-      />
       <ProgressTeacherStack.Screen
         name={"ChooseClass"}
         component={ChooseClassPage}
@@ -43,6 +36,13 @@ export const ProgressTeacherNavigator = () => {
         component={ChooseStudentPage}
         options={{
           title: 'Выберите ученика',
+        }}
+      />
+      <ProgressTeacherStack.Screen
+        name={"ChooseSubject"}
+        component={ChooseSubjectPage}
+        options={{
+          title: 'Выберите предмет'
         }}
       />
       <ProgressTeacherStack.Screen

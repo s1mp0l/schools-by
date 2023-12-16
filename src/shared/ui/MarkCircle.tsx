@@ -10,9 +10,10 @@ interface Props {
 }
 
 export const MarkCircle = ({mark, color, size, isRectangle, isAddMark}: Props) => {
-  const circleColor = mark >= 4 ? mark >= 7 ?
-    CustomColors.success : CustomColors.warn : CustomColors.error;
+  const circleColor = mark > 0 ? mark >= 4 ? mark >= 7 ?
+    CustomColors.success : CustomColors.warn : CustomColors.error : CustomColors.baseGray;
 
+  const valueString = isAddMark ? '+' : (mark === 0 ? '' : mark.toString());
   return (
     <View style={{
       ...styles.circle,
@@ -25,7 +26,7 @@ export const MarkCircle = ({mark, color, size, isRectangle, isAddMark}: Props) =
         color: 'white',
         fontSize: Math.floor(size / 2)
       }}>
-        {isAddMark ? '+' : mark.toString()}
+        {valueString}
       </Text>
     </View>
   );

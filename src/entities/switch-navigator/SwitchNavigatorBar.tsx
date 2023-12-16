@@ -4,6 +4,7 @@ import {SwitchNavigator} from "./SwitchNavigator";
 type SwitchNavigatorBarProps = BottomTabBarProps;
 
 export const SwitchNavigatorBar = ({ state, descriptors, navigation }: SwitchNavigatorBarProps) => {
+  // const value = state.routes[state.index].key;
   const onPress = (value: string) => {
     const index = state.routes.findIndex(r =>
       r.key === value
@@ -38,5 +39,5 @@ export const SwitchNavigatorBar = ({ state, descriptors, navigation }: SwitchNav
     }
   })
 
-  return <SwitchNavigator options={options} onPressHandler={onPress} />
+  return <SwitchNavigator options={options} onPressHandler={onPress} value={state.index}/>
 }

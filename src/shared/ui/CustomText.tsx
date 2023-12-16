@@ -4,18 +4,18 @@ interface Props {
   text: string;
   type: 'main' | 'title' | 'subTitle' | 'paragraph' | 'small';
   color?: ColorValue | undefined;
-  styles?: StyleProp<TextStyle>;
+  styles?: TextStyle;
 }
 
-export const CustomText = ({text, type, color}: Props) => {
+export const CustomText = ({text, type, color, styles}: Props) => {
   return (
-    <Text style = {{...styles.commonStyles, ...styles[type], color: color ?? 'black'}}>
+    <Text style = {{...styles1.commonStyles, ...styles1[type], ...styles, color: color ?? 'black'}}>
       {text}
     </Text>
   );
 };
 
-const styles = StyleSheet.create({
+const styles1 = StyleSheet.create({
   commonStyles: {
     // fontFamily: 'Montserrat'
   },

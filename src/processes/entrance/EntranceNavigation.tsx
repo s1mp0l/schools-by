@@ -8,7 +8,7 @@ export type EntranceStackParamList = {
   App: undefined,
 };
 
-const EntranceStack = createNativeStackNavigator();
+const EntranceStack = createNativeStackNavigator<EntranceStackParamList>();
 
 export const EntranceNavigator = () => {
   return (

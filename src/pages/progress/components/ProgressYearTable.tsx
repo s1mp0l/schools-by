@@ -1,28 +1,39 @@
-import {View} from "react-native";
+import {ScrollView, View} from "react-native";
 import {ProgressYearRow} from "./ProgressYearRow";
 import {CustomColors} from "../../../shared/lib/constants";
+import {useAppSelector} from "../../../app/hooks";
+import {RootState} from "../../../app/store";
+import {ProgressYearHeader} from "./ProgressYearHeader";
 
-export const ProgressYearTable = () => {
-  const subjects = [
-    {title: 'Математика'},
-    {title: 'Руск. яз.'},
-    {title: 'Англ. яз.'},
-    {title: 'Литература'},
-    {title: 'Химия'},
-  ];
+interface Props {
+  onRowPress: (subject: SubjectData) => void;
+}
 
-  const rows = subjects.map((s, i) =>
-    <ProgressYearRow subject={s} key={`${s.title}+${i}`}/>
+export const ProgressYearTable = ({onRowPress}:Props) => {
+  const {studentSubjects} = useAppSelector((state: RootState) => state.progress);
+
+  const rows = studentSubjects.map((s, i) =>
+    <ProgressYearRow subject={s} key={`${s.title}+${i}`} onRowPress={onRowPress}/>
   )
 
   return (
     <View style={{
-      padding: 15,
-      backgroundColor: CustomColors.secondaryLight,
-      gap: 10,
-      borderRadius: 20,
+      paddingVertical: 20
     }}>
-      {rows}
+      <ProgressYearHeader />
+      <ScrollView>
+        <View style={{
+          gap: 10,
+          padding: 15,
+          paddingBottom: 50,
+          backgroundColor: CustomColors.secondaryLight,
+          borderRadius: 20,
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+        }}>
+          {rows}
+        </View>
+      </ScrollView>
     </View>
   );
 };

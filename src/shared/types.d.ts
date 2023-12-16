@@ -31,6 +31,7 @@ interface StudentData {
   id: number;
   user: UserData;
   parents: number[];
+  nclass: ClassData;
 }
 
 interface ParentData {
@@ -57,14 +58,19 @@ interface SubjectData {
   title: string;
 }
 
+interface SubjectWithMarks extends SubjectData {
+  marks: MarkData[];
+}
+
 interface LessonData {
   id: number;
-  date: string;
-  time: string;
+  date?: string;
+  time?: string;
   task: string;
-  nclass: number;
+  classroom: string;
+  nclass: string;
   teacher: number;
-  subject: number;
+  subject: string;
 }
 
 interface MarkData {
@@ -80,4 +86,43 @@ interface MarkData {
   student?: number;
   lesson?: number;
   subject?: number;
+}
+
+interface SettingsData {
+  id: number;
+  lang: string;
+  darkTheme: boolean;
+  fontSize: number;
+  notificationsOn: boolean;
+  user: number;
+}
+
+interface CustomDate {
+  day: number;
+  month: number;
+  year: number;
+  weekDayIndex: number;
+  weekDayFullName: string;
+  weekDayShortName: string;
+}
+
+interface LessonWithMark extends LessonData {
+  mark: number | null;
+}
+
+interface SubjectWithYearMarks extends SubjectWithMarks {
+  yearMark: number;
+  currentSemesterMark: number;
+  semesterMarks: MarkData[];
+}
+
+interface MarkListItemProps {
+  value: number;
+  text: string;
+  color?: string;
+  isAddButton?: boolean;
+}
+
+interface ClassWithStudents extends ClassData {
+  students: StudentData[];
 }

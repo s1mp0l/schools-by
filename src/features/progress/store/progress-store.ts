@@ -1,16 +1,22 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchClassStudents, fetchStudentCurrentMarks, fetchStudentYearMarks} from "./progress-thunks";
+import {
+  fetchAddStudentMark,
+  fetchAllStudentMarks, fetchClassesStudents,
+  fetchClassLessons,
+} from "./progress-thunks";
 
 export const progressSlice = createSlice({
   name: "progress",
   initialState: {
-    studentsList: [] as StudentData[],
+    // studentsList: [] as StudentData[],
     selectedSubject: {} as SubjectData,
     selectedClass: {} as ClassData,
     selectedStudent: {} as StudentData,
     selectedLesson: {} as LessonData,
-    currentMarks: [] as MarkData[],
-    yearMarks: [] as MarkData[],
+
+    classesWithStudents: {} as ClassWithStudents[],
+    classLessons: [] as LessonData[],
+    studentSubjects: [] as SubjectWithYearMarks[]
   },
   reducers: {
     setSelectedSubject(state, action: PayloadAction<SubjectData>) {
@@ -27,14 +33,41 @@ export const progressSlice = createSlice({
     }
   },
   extraReducers: builder => {
-    builder.addCase(fetchClassStudents.fulfilled, (state, action) => {
-      state.studentsList = action.payload;
+    builder.addCase(fetchClassesStudents.fulfilled, (state, action) => {
+      state.classesWithStudents = action.payload;
     })
-    builder.addCase(fetchStudentYearMarks.fulfilled, (state, action) => {
-      state.yearMarks = action.payload;
+    builder.addCase(fetchClassLessons.fulfilled, (state, action) => {
+      state.classLessons = action.payload;
     })
-    builder.addCase(fetchStudentCurrentMarks.fulfilled, (state, action) => {
-      state.currentMarks = action.payload;
+    builder.addCase(fetchAllStudentMarks.fulfilled, (state, action) => {
+      state.studentSubjects = action.payload;
+    })
+    builder.addCase(fetchAddStudentMark.fulfilled, (state, action) => {
+      const addedMark = action.payload;
+      const addedSubject = state.studentSubjects.find(s =>
+        s.id === addedMark.subject
+      );
+      if (!addedSubject) state.studentSubjects =
+        [...state.studentSubjects, ({
+          ...state.selectedSubject,
+          marks: [],
+          yearMark: 0,
+          semesterMarks: [],
+          currentSemesterMark: 0,
+        } as SubjectWithYearMarks)
+        ];
+
+      const subject = state.studentSubjects?.find(s =>
+        s.id === addedMark.subject);
+
+      if (subject) {
+        subject?.marks?.push(addedMark)
+        const newCurrentSemMark =
+        subject.currentSemesterMark = subject?.marks ?
+          +(subject?.marks?.reduce((s, m) =>
+              s += m.value, 0)
+            / subject?.marks?.length).toFixed(2) : 0;
+      }
     })
   }
 })

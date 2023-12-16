@@ -1,7 +1,7 @@
 import React from "react";
-import {ProgressNavigator} from "../processes/progress/ProgressNavigator";
-import {DiaryNavigator} from "../processes/diary/DiaryNavigator";
-import {ProfileNavigator} from "../processes/profile/ProfileNavigator";
+import {ProgressNavigator, ProgressTabParamList} from "../processes/progress/ProgressNavigator";
+import {DiaryNavigator, DiaryTabParamList} from "../processes/diary/DiaryNavigator";
+import {ProfileNavigator, ProfileStackParamList} from "../processes/profile/ProfileNavigator";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import DiarySvg from "../../assets/icons/book.svg";
 import MarksSvg from "../../assets/icons/trending-up.svg";
@@ -10,21 +10,22 @@ import DiarySvgActive from "../../assets/icons/book-active.svg";
 import MarksSvgActive from "../../assets/icons/trending-up-active.svg";
 import ProfileSvgActive from "../../assets/icons/user-active.svg";
 import {CustomColors} from "../shared/lib/constants";
-import {ProgressTeacherNavigator} from "../processes/progress/ProgressTeacherNavigator";
+import {ProgressTeacherNavigator, TeacherNavigatorParamList} from "../processes/progress/ProgressTeacherNavigator";
 import {useAppSelector} from "./hooks";
 import {RootState} from "./store";
+import {NavigatorScreenParams} from "@react-navigation/native";
 
 export type RootTabParamList = {
-  DiaryStack: undefined,
-  ProgressStack: undefined,
-  ProfileStack: undefined
+  DiaryStack: NavigatorScreenParams<DiaryTabParamList>,
+  ProgressStack: NavigatorScreenParams<TeacherNavigatorParamList | ProgressTabParamList>,
+  ProfileStack: NavigatorScreenParams<ProfileStackParamList>
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export function MainNavigation() {
   const {data} = useAppSelector((state: RootState) => state.user);
-  const isTeacher = data.user.userType === 'teacher';
+  const isTeacher = data?.user?.userType === 'teacher';
 
   return (
       <Tab.Navigator

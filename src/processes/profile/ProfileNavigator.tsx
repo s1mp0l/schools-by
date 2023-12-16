@@ -2,14 +2,15 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {User} from "../../features/user/User";
 import {NoteList} from "../../entities/notes/NoteList";
 import {navigatorScreenOptions} from "../../shared/lib/constants";
+import {TeachersPage} from "../../pages/profile/screens/TeachersPage";
 
 export type ProfileStackParamList = {
   Home: undefined,
-  Profile: undefined,
-  UserNotes: undefined
+  UserNotes: undefined,
+  TeachersPage: undefined
 };
 
-const ProfileStack = createNativeStackNavigator();
+const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
 
 export const ProfileNavigator = () => {
   return (
@@ -26,6 +27,12 @@ export const ProfileNavigator = () => {
         component={NoteList}
         options={{
           title: 'Уведомления'
+        }}/>
+      <ProfileStack.Screen
+        name={"TeachersPage"}
+        component={TeachersPage}
+        options={{
+          title: 'Учительская'
         }}/>
     </ProfileStack.Navigator>
   );

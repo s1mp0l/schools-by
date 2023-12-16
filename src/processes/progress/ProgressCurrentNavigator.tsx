@@ -1,31 +1,33 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {ProgressSubjectDetailPage} from "../../pages/progress/screens/ProgressSubjectDetailPage";
-import {ProgressSubjectsListPage} from "../../pages/progress/screens/ProgressSubjectsListPage";
+import {ChooseSubjectPage} from "../../pages/progress/screens/ChooseSubjectPage";
+import {navigatorScreenOptions} from "../../shared/lib/constants";
 
-export type DiaryDayNavigatorParamList = {
-  Home: undefined,
-  Lesson: undefined,
+export type ProgressCurrentParamList = {
+  SubjectDetail: undefined,
+  ChooseSubject: undefined
 };
 
-const ProgressCurrentStack = createNativeStackNavigator();
+const ProgressCurrentStack = createNativeStackNavigator<ProgressCurrentParamList>();
 
 export const ProgressCurrentNavigator = () => {
   return (
-    <ProgressCurrentStack.Navigator screenOptions={{
-      headerShown: false
-    }}>
-      <ProgressCurrentStack.Screen
-        name={"Home"}
-        component={ProgressSubjectsListPage}
-        options={{
-          title: 'Выберите предмет'
-        }}
-      />
+    <ProgressCurrentStack.Navigator
+      initialRouteName={'ChooseSubject'}
+      screenOptions={navigatorScreenOptions}
+    >
       <ProgressCurrentStack.Screen
         name={"SubjectDetail"}
         component={ProgressSubjectDetailPage}
         options={{
           title: 'Предмет',
+        }}
+      />
+      <ProgressCurrentStack.Screen
+        name={"ChooseSubject"}
+        component={ChooseSubjectPage}
+        options={{
+          title: 'Выберите предмет'
         }}
       />
     </ProgressCurrentStack.Navigator>

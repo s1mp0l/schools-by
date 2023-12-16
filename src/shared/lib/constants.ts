@@ -1,4 +1,15 @@
+// export const baseApiUrl = 'http://localhost:8080'
 export const baseApiUrl = 'http://localhost:8080'
+
+export const constWeekDayNames = [
+  'Воскресенье', 'Понедельник', 'Вторник',
+  'Среда', 'Четверг', 'Пятница', 'Суббота'
+];
+
+export const constWeekDayNamesShortened = [
+  'Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'
+];
+
 
 export const CustomColors = {
   primary: '#007AFF',

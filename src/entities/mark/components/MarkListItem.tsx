@@ -3,16 +3,17 @@ import {View} from "react-native";
 import AddMarkButton from "./AddMarkButton";
 
 interface Props {
-  item: MarkData
+  item: MarkListItemProps;
+  markSize?: number;
 }
 
-export const MarkListItem = ({ item }: Props) => {
-  return <View style={{flex: 1, marginVertical: 5}}>
-    {
-      item.id ?
-        <MarkCircleWithText mark={item.value} size={40} text={item.lessonDate.substring(0, 5)} /> :
-        <AddMarkButton />
-    }
+export const MarkListItem = ({item, markSize}: Props) => {
+  return <View style={{flex: 1 / 5, marginVertical: 5}}>
+    {item.isAddButton ? <AddMarkButton /> : <MarkCircleWithText
+      mark={item.value}
+      size={markSize || 40}
+      text={item.text.substring(0, 5)}
+      color={item.color}/>}
   </View>;
 
 };

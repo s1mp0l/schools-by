@@ -9,7 +9,7 @@ export const NoteItem = ({ note }: { note: NoteData }) => {
   const dispatch = useAppDispatch();
 
   const handlePress = () => {
-    dispatch(updateNoteSeenStatus(note.id))
+    if (!note.seenStatus) dispatch(updateNoteSeenStatus(note.id))
   }
 
   return (

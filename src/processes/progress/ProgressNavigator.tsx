@@ -1,18 +1,29 @@
 import {navigatorScreenOptions} from "../../shared/lib/constants";
-import {ProgressCurrentPage} from "../../pages/progress/screens/ProgressCurrentPage";
 import {ProgressYearPage} from "../../pages/progress/screens/ProgressYearPage";
 import {SwitchNavigatorBar} from "../../entities/switch-navigator/SwitchNavigatorBar";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {ProgressCurrentNavigator, ProgressCurrentParamList} from "./ProgressCurrentNavigator";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {useEffect} from "react";
+import {fetchAllStudentMarks} from "../../features/progress/store/progress-thunks";
+import {NavigatorScreenParams} from "@react-navigation/native";
 
-export type ProgressStackParamList = {
-  Home: undefined,
-  Current: undefined,
+export type ProgressTabParamList = {
+  Current: NavigatorScreenParams<ProgressCurrentParamList>,
   Year: undefined
 };
 
-const ProgressTab = createBottomTabNavigator<ProgressStackParamList>();
+const ProgressTab = createBottomTabNavigator<ProgressTabParamList>();
 
 export const ProgressNavigator = () => {
+  const {data} = useAppSelector(state => state.user);
+  const {studentSubjects} = useAppSelector(state => state.progress)
+  const studentId = (data as StudentData).id;
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (studentId || !studentSubjects.length)
+      dispatch(fetchAllStudentMarks(studentId));
+  }, [studentId, studentSubjects.length]);
   return (
     <ProgressTab.Navigator
       tabBar={(props) => <SwitchNavigatorBar {...props}/>}
@@ -27,9 +38,10 @@ export const ProgressNavigator = () => {
       />
       <ProgressTab.Screen
         name={'Current'}
-        component={ProgressCurrentPage}
+        component={ProgressCurrentNavigator}
         options={{
-          title: 'Текущая'
+          title: 'Текущая',
+          headerShown: false
         }}
       />
     </ProgressTab.Navigator>

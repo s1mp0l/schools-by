@@ -1,46 +1,50 @@
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {CustomColors} from "../../../shared/lib/constants";
 import {CustomText} from "../../../shared/ui/CustomText";
 import {MarkCircle} from "../../../shared/ui/MarkCircle";
-import {addMinutes, numberToFixedLength} from "../../../shared/lib/utils";
+import {addTimes, numberToFixedLength, secsToTime} from "../../../shared/lib/utils";
 
 interface WeekDayLessonProps {
-  lesson: any
+  lesson: LessonWithMark | null;
+  onPressHandler?: (lesson: LessonData) => void;
+  isTeacher?: boolean;
 }
 
-export const DayLesson = ({lesson}: WeekDayLessonProps) => {
-  console.log(lesson?.time)
-
-  const startTime = (lesson?.time ? (lesson.time as Date) : null);
-  const endTime = startTime && addMinutes(startTime, 45);
+export const DayLesson = ({lesson, onPressHandler, isTeacher}: WeekDayLessonProps) => {
+  const startTime = lesson?.time || '';
+  const endTime = lesson?.time ? addTimes(lesson.time, secsToTime(45*60)) : '';
+  const hasHomeTask = lesson?.task?.trim()?.length;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.timeContainer}>
-        {startTime && endTime && <View>
-          <View style={styles.timeItem}>
-            <CustomText text={numberToFixedLength(startTime?.getHours(), 2) || ''} type={'paragraph'}/>
-            <CustomText text={numberToFixedLength(startTime?.getMinutes(), 2) || ''} type={'small'}/>
-          </View>
-          <View style={styles.timeItem}>
-            <CustomText text={numberToFixedLength(endTime?.getHours(), 2)  || ''} type={'paragraph'}/>
-            <CustomText text={numberToFixedLength(endTime?.getMinutes(), 2) || ''} type={'small'}/>
-          </View>
-        </View>}
+    <TouchableOpacity onPress={onPressHandler && lesson ? () => onPressHandler(lesson) : () => {}}>
+      <View style={styles.container}>
+        <View style={styles.timeContainer}>
+          {startTime && endTime && <View>
+            <View style={styles.timeItem}>
+              <CustomText text={startTime.substring(0, 2)} type={'paragraph'}/>
+              <CustomText text={startTime.substring(3, 5)} type={'small'}/>
+            </View>
+            <View style={styles.timeItem}>
+              <CustomText text={endTime.substring(0, 2)} type={'paragraph'}/>
+              <CustomText text={endTime.substring(3, 5)} type={'small'}/>
+            </View>
+          </View>}
+        </View>
+        <View style={styles.subjectContainer}>
+          <CustomText text={lesson?.subject?.toString() || ''} type={'title'} />
+        </View>
+        <View style={styles.classroomContainer}>
+          <CustomText text={lesson?.classroom ? `каб. ${lesson.classroom}` : ''} type={'small'} />
+        </View>
+        <View style={styles.hometaskContainer}>
+          {hasHomeTask ? <View style={styles.hometaskIndicator}></View> : <></>}
+        </View>
+        <View style={styles.markContainer}>
+          {isTeacher ? <CustomText text={lesson?.nclass ? `"${lesson.nclass}"` : ''} type={'paragraph'}/> :
+            lesson?.mark ? <MarkCircle mark={lesson?.mark || 0} size={40} /> : <></>}
+        </View>
       </View>
-      <View style={styles.subjectContainer}>
-        <CustomText text={lesson?.subject} type={'title'} />
-      </View>
-      <View style={styles.classroomContainer}>
-        <CustomText text={lesson?.classroom ? `каб. ${lesson.classroom}` : ''} type={'small'} />
-      </View>
-      <View style={styles.hometaskContainer}>
-        {!!lesson?.hometask ? <View style={styles.hometaskIndicator}></View> : <></>}
-      </View>
-      <View style={styles.markContainer}>
-        {lesson?.mark ? <MarkCircle mark={lesson?.mark} size={40} /> : <></>}
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -67,7 +71,7 @@ const styles = StyleSheet.create({
     gap: 2
   },
   subjectContainer: {
-    flex: 4,
+    flex: 5,
     padding: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 2
   },
   markContainer: {
-    flex: 1
+    flex: 1.5
   },
   hometaskContainer: {
     flex: 1

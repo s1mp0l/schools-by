@@ -1,21 +1,28 @@
 import {ReactNode} from 'react';
-import {GestureResponderEvent, StyleSheet, TouchableOpacity} from "react-native";
+import {
+    GestureResponderEvent,
+    StyleSheet,
+    TouchableOpacity, ViewStyle
+} from "react-native";
 
 interface Props {
-    children: ReactNode,
-    onPress?: ((event: GestureResponderEvent) => void) | undefined
+    children: ReactNode;
+    onPress?: () => void;
+    styles?: ViewStyle;
 }
 
-export const IconButton = ({ children, onPress }: Props) => {
+export const IconButton = ({ children, onPress, styles }: Props) => {
     return (
-        <TouchableOpacity onPress={onPress ?? (()=>{})} style={styles.iconBtn}>
+        <TouchableOpacity onPress={onPress ?? (()=>{})} style={{...styles1?.iconBtn, ...styles}}>
             {children}
         </TouchableOpacity>
     );
 };
 
-const styles = StyleSheet.create({
+const styles1 = StyleSheet.create({
     iconBtn: {
-        justifyContent: 'center',
+        flexDirection: 'row',
+        gap: 10,
+        alignItems: 'center',
     },
 })

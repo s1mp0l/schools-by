@@ -1,16 +1,19 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fetchUser, updateNoteSeenStatus} from "./user-thunks";
+import {fetchAllTeachers, fetchUser, updateNoteSeenStatus} from "./user-thunks";
 
 export const userSlice = createSlice({
   name: "user",
   initialState: {
+    isTeacher: false,
     data: {} as UserUnionData,
     loading: false,
     authError: '',
+    allTeachers: [] as TeacherData[],
   },
   reducers: {
     setUser(state, action: PayloadAction<UserUnionData>) {
       state.data = action.payload;
+      state.isTeacher = action.payload?.user?.userType === 'teacher';
     }
   },
   extraReducers: builder => {
@@ -19,6 +22,7 @@ export const userSlice = createSlice({
     })
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.data = action.payload;
+      if (action.payload.user.userType === 'teacher') state.isTeacher = true;
       state.loading = false;
     })
     builder.addCase(fetchUser.rejected, (state, action) => {
@@ -33,6 +37,9 @@ export const userSlice = createSlice({
       const userNotes = state.data.user.notes as NoteData[];
       state.data.user.notes = userNotes.map(n => n.id !== action.payload.id ? n : action.payload)
       state.loading = false
+    })
+    builder.addCase(fetchAllTeachers.fulfilled, (state, action) => {
+      state.allTeachers = action.payload;
     })
   }
 })

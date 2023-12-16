@@ -1,6 +1,6 @@
 import {View} from "react-native";
 
-export const ProgressSubjectsListPage = () => {
+export const SettingItem = () => {
   return (
     <View>
 
