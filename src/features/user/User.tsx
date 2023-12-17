@@ -15,6 +15,7 @@ import {EntranceStackParamList} from "../../processes/entrance/EntranceNavigatio
 import {setUser} from "./store/user-store";
 import SchoolButtonsProfile from "./components/SchoolButtonsProfile";
 import {SelectStudent} from "./components/SelectStudent";
+import {CallPhone} from "../../shared/ui/CallPhone";
 
 
 type ProfileScreenNavigationProp = StackNavigationProp<
@@ -83,7 +84,7 @@ export const User = ({navigation}: Props) => {
         </View>
         <View style={styles.textContainer}>
           <CustomText text={`${user?.firstName} ${user?.lastName}`} type={'main'} color={'white'} />
-          <CustomText text={user?.phoneNumber} type={'paragraph'} color={'white'} />
+          <CallPhone phoneNumber={user?.phoneNumber} color={'white'}/>
           <CustomText text={userTypeNameMap.get(user?.userType) ?? ''} type={'title'} color={'white'} />
         </View>
       </View>

@@ -15,7 +15,7 @@ export const CustomColors = {
   primary: '#007AFF',
   secondary: '#8EC4FF',
   secondaryLight: '#CEE1F6',
-  baseGray: '#B6B6B6',
+  baseGray: '#D0D0D0',
   lightGray: '#F0F0F0',
   darkGray: '#676767',
   error: '#FA3C6A',

@@ -8,6 +8,15 @@ import {
   fetchTeacherLessonsForDay,
 } from "../../../features/diary/store/diary-thunks";
 import {fetchAllStudentMarks} from "../../../features/progress/store/progress-thunks";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {DiaryDayNavigatorParamList} from "../../../processes/diary/DiaryDayNavigator";
+import {useNavigation} from "@react-navigation/native";
+import {setSelectedLessonId} from "../../../features/diary/store/diary-store";
+
+type DiaryDayNavigationProp = StackNavigationProp<
+  DiaryDayNavigatorParamList,
+  'Home'
+>;
 
 export const DayDetailView = () => {
   const dispatch = useAppDispatch();
@@ -35,16 +44,31 @@ export const DayDetailView = () => {
     }
   }, [data]);
 
+  const navigation = useNavigation<DiaryDayNavigationProp>();
+
   const lessonsLength = 8;
 
   const dayLessonsWithMarks: LessonWithMark[] = dayLessons.map(l => ({
     ...l,
-    mark: studentSubjects.find(s => s.title === l.subject)
+    mark: isTeacher ? null : studentSubjects.find(s => s.title === l.subject)
       ?.marks?.find(m => m.lesson === l.id)?.value || null
-  }))
+  }));
+
+  const onPressHandler = (lesson: LessonWithMark) => {
+    if (isTeacher) {
+      dispatch(setSelectedLessonId(lesson.id));
+      navigation.navigate('TeacherTopNav');
+    } else {
+      navigation.navigate('Lesson', { lesson: lesson });
+    }
+  }
 
   const lessonsItems = [...Array(lessonsLength).keys()].map((i) =>
-    <DayLesson isTeacher={isTeacher} lesson={dayLessonsWithMarks[i]} key={`weekDayLesson${i}`}/>
+    <DayLesson isTeacher={isTeacher}
+               lesson={dayLessonsWithMarks[i]}
+               key={`weekDayLesson${i}`}
+               onPressHandler={() => onPressHandler(dayLessonsWithMarks[i])}
+    />
   );
 
   return (

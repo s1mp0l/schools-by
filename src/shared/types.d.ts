@@ -128,3 +128,19 @@ interface MarkListItemProps {
 interface ClassWithStudents extends ClassData {
   students: StudentData[];
 }
+
+interface LessonWithStudentsMarks extends LessonData {
+  students: StudentWithMark[];
+}
+
+interface StudentWithMark extends StudentData {
+  mark: MarkData;
+  absence:AbsenceData;
+}
+
+interface AbsenceData {
+  id: number;
+  absence: boolean;
+  student: number;
+  lesson: number;
+}

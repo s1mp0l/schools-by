@@ -1,7 +1,7 @@
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {useEffect} from "react";
 import {fetchAllTeachers} from "../../../features/user/store/user-thunks";
-import {FlatList, View} from "react-native";
+import {FlatList, ScrollView, View} from "react-native";
 import {TeacherListItem} from "../components/TeacherListItem";
 
 export const AdministrationPage = () => {
@@ -45,13 +45,17 @@ export const AdministrationPage = () => {
     })
   }
 
+  const teacherComponents = teacherItems.map(t =>
+    <TeacherListItem name={t.name} status={t.status} key={t.name}/>
+  )
+
   return (
     <View>
-      <FlatList
-        data={teacherItems}
-        extraData={allTeachers}
-        renderItem={({item}) => <TeacherListItem {...item}/>}
-      />
+      <ScrollView>
+        <View style={{}}>
+          {teacherComponents}
+        </View>
+      </ScrollView>
     </View>
   );
 };

@@ -7,28 +7,26 @@ import {RootState} from "../../../app/store";
 import {setSelectedStudent} from "../../../features/progress/store/progress-store";
 import {ChooseStudentItem} from "../../../entities/student/components/ChooseStudentItem";
 import {CustomText} from "../../../shared/ui/CustomText";
+import {DiaryTeacherTopTapNavigatorParamList} from "../../../processes/diary/DiaryTeacherTopTabNavigator";
+import {updateAbsenceStatus} from "../../../features/diary/store/diary-thunks";
 
-type TeacherNavigationProp = StackNavigationProp<
-  TeacherNavigatorParamList,
-  'ChooseStudent'
+type DiaryTeacherTopTapProp = StackNavigationProp<
+  DiaryTeacherTopTapNavigatorParamList,
+  'Absence'
 >;
 
 type Props = {
-  navigation: TeacherNavigationProp;
+  navigation: DiaryTeacherTopTapProp;
 };
 
-export const ChooseStudentPage = ({navigation}: Props) => {
+export const DiaryAbsencePage = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
 
-  const {selectedClass, classesWithStudents} =
-    useAppSelector((state: RootState) => state.progress);
-
-  const studentsList = classesWithStudents.find(cl =>
-    cl.id === selectedClass.id)?.students;
+  const {selectedLesson} = useAppSelector((state: RootState) => state.diary);
+  const studentsList = selectedLesson.students;
 
   const onPressHandler = (s: StudentData) => {
-    dispatch(setSelectedStudent(s));
-    navigation.navigate('ChooseSubject');
+    dispatch(updateAbsenceStatus({lessonId: selectedLesson.id, studentId: s.id}));
   }
 
   return (
@@ -37,7 +35,12 @@ export const ChooseStudentPage = ({navigation}: Props) => {
         contentContainerStyle={{gap: 20}}
         data={studentsList}
         renderItem={({item}) =>
-          <ChooseStudentItem student={item} key={item.user.login} onPressHandler={onPressHandler}/>}
+          <ChooseStudentItem
+            forAbsence={true}
+            absence={item.absence}
+            student={item}
+            key={item.user.login}
+            onPressHandler={onPressHandler}/>}
       /> : <CustomText text={'Cписок учеников пуст'} type={'title'} />}
     </PageLayout>
   );

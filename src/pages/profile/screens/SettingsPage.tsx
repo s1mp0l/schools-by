@@ -1,4 +1,11 @@
-import {ImageBackground, ScrollView, StyleSheet, Switch, View} from "react-native";
+import {
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  TouchableOpacity,
+  View
+} from "react-native";
 import {useAppSelector} from "../../../app/hooks";
 import {CustomText} from "../../../shared/ui/CustomText";
 import {PageLayout} from "../../../shared/ui/PageLayout";
@@ -14,6 +21,8 @@ import MessageSvg from '../../../../assets/icons/message-circle.svg';
 import VolumeSvg from '../../../../assets/icons/volume-2.svg';
 import PhoneSvg from '../../../../assets/icons/smartphone.svg';
 import {useState} from "react";
+import {callNumber} from "../../../shared/lib/utils";
+import {CallPhone} from "../../../shared/ui/CallPhone";
 
 export const SettingsPage = () => {
   const {data, isParent, parentData} = useAppSelector(state => state.user);
@@ -59,7 +68,7 @@ export const SettingsPage = () => {
             borderBottomColor: 'black'
           }}>
             <CustomText text={'Номер телефона'} type={'title'} />
-            <CustomText text={user?.phoneNumber} type={'paragraph'} color={CustomColors.darkGray}/>
+            <CallPhone phoneNumber={user?.phoneNumber}/>
           </View>
           <View style={{
             paddingVertical: 10,
@@ -78,8 +87,8 @@ export const SettingsPage = () => {
               <IconButton>
                 <GlobeSvg width={40} height={40} />
                 <View>
-                  <CustomText text={'Язык'} type={'title'} />
-                  <CustomText text={lang} type={'paragraph'} color={CustomColors.darkGray}/>
+                  <CustomText text={'Язык'} type={'title'} color={CustomColors.baseGray}/>
+                  <CustomText text={lang} type={'paragraph'} color={CustomColors.baseGray}/>
                 </View>
               </IconButton>
             </View>
@@ -93,18 +102,18 @@ export const SettingsPage = () => {
                 <MoonSvg width={40} height={40} /> :
                 <SunSvg width={40} height={40} />}
               <View>
-                <CustomText text={'Тема'} type={'title'} />
-                <CustomText text={darkTheme ? 'темная' : 'светлая'} type={'paragraph'} color={CustomColors.darkGray}/>
+                <CustomText text={'Тема'} type={'title'} color={CustomColors.baseGray}/>
+                <CustomText text={darkTheme ? 'темная' : 'светлая'} type={'paragraph'} color={CustomColors.baseGray}/>
               </View>
             </IconButton>
-            <Switch value={!darkTheme} onChange={() => setDarkTheme(prevState => !prevState)}/>
+            <Switch disabled={true} value={!darkTheme} onChange={() => setDarkTheme(prevState => !prevState)}/>
           </View>
           <View style={styles.buttonInner}>
             <IconButton>
               <TypeSvg width={40} height={40} />
               <View>
-                <CustomText text={'Шрифт'} type={'title'} />
-                <CustomText text={font} type={'paragraph'} color={CustomColors.darkGray}/>
+                <CustomText text={'Шрифт'} type={'title'} color={CustomColors.baseGray}/>
+                <CustomText text={font} type={'paragraph'} color={CustomColors.baseGray}/>
               </View>
             </IconButton>
           </View>

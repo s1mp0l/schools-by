@@ -1,4 +1,4 @@
-import {TextInput, View} from "react-native";
+import {TextInput} from "react-native";
 import {PageLayout} from "../../../shared/ui/PageLayout";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import React, {useState} from "react";
@@ -11,37 +11,36 @@ import {CustomColors} from "../../../shared/lib/constants";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {fetchAddStudentMark} from "../../../features/progress/store/progress-thunks";
 import {DiaryTeacherMarksNavigatorParamList} from "../../../processes/diary/DiaryTeacherMarksNavigator";
-import {setSelectedLesson, setSelectedStudent} from "../../../features/progress/store/progress-store";
 import {setDiarySelectedStudent} from "../../../features/diary/store/diary-store";
+import {fetchLessonWithStudentMarks} from "../../../features/diary/store/diary-thunks";
 
-type TeacherNavigationProp = StackNavigationProp<
-  TeacherNavigatorParamList,
+type DiaryTeacherMarksStackProp = StackNavigationProp<
+  DiaryTeacherMarksNavigatorParamList,
   'AddMark'
 >;
 
-type DiaryTeacherMarksStackProps = StackScreenProps<DiaryTeacherMarksNavigatorParamList>;
-
-export const AddMarkPage = () => {
-  const navigation = useNavigation<TeacherNavigationProp>();
+export const AddMarkPageDiary = () => {
+  const navigation = useNavigation<DiaryTeacherMarksStackProp>();
 
   const [selectedValue, setSelectedValue] = useState(10);
   const [comment, setComment] = useState('');
 
-
   const dispatch = useAppDispatch();
 
   const {isTeacher, data} = useAppSelector(state => state.user)
-  const {selectedLesson: progressLesson, selectedStudent: progressStudent} =
-    useAppSelector(state => state.progress)
+
+  const {selectedLessonId, selectedStudent: diaryStudent} =
+    useAppSelector(state => state.diary)
 
   const onSubmitHandler = () => {
-    if (progressLesson && progressStudent) {
-      const studentId = progressStudent.id;
-      const lessonId = progressLesson.id;
+    if (selectedLessonId && diaryStudent) {
+      const studentId = diaryStudent.id;
 
-      dispatch(setSelectedLesson({} as LessonData));
-      dispatch(fetchAddStudentMark({studentId, lessonId, value: selectedValue}));
-      (navigation as TeacherNavigationProp).navigate('SubjectDetail');
+      dispatch(setDiarySelectedStudent({} as StudentData));
+      dispatch(fetchAddStudentMark({studentId, lessonId: selectedLessonId, value: selectedValue}));
+      if (!selectedLessonId) return;
+      setTimeout(() => dispatch(fetchLessonWithStudentMarks(selectedLessonId)), 2000);
+      (navigation as DiaryTeacherMarksStackProp).navigate('ChooseStudentWithMark');
     }
   }
 

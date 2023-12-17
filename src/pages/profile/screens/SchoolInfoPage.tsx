@@ -23,11 +23,11 @@ export const SchoolInfoPage = () => {
                           text={'Республика Беларусь, Гомельская область, 247760'}>
             <MapPinSvg width={40} height={40}/>
           </SchoolInfoItem>
-          <SchoolInfoItem title={'+375236230703'}
+          <SchoolInfoItem title={'+375236230703'} phoneTitle={true}
                           text={'(Заместитель директора по воспитательной работе)'}>
             <PhoneSvg width={40} height={40}/>
           </SchoolInfoItem>
-          <SchoolInfoItem title={'+375236230474'}
+          <SchoolInfoItem title={'+375236230474'} phoneTitle={true}
                           text={'(Заместитель директора по учебной работе)'}>
             <PhoneSvg width={40} height={40}/>
           </SchoolInfoItem>

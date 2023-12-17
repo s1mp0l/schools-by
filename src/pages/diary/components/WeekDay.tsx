@@ -14,16 +14,17 @@ interface Props {
 
 export const WeekDay = ({title, dayIndex, onPressHandler, date, lessons}: Props) => {
   const lessonsLength = 8;
+  const {isTeacher} = useAppSelector(state => state.user)
   const {studentSubjects} = useAppSelector(state => state.progress)
 
   const dayLessonsWithMarks: LessonWithMark[] = lessons.map(l => ({
     ...l,
-    mark: studentSubjects.find(s => s.title === l.subject)
+    mark: isTeacher ? null : studentSubjects.find(s => s.title === l.subject)
       ?.marks?.find(m => m.lesson === l.id)?.value || null
   }))
 
   const lessonsItems = [...Array(lessonsLength).keys()].map((i) =>
-    <WeekDayLesson lesson={dayLessonsWithMarks[i]} key={`weekDayLesson${i}`}/>
+    <WeekDayLesson isTeacher={isTeacher} lesson={dayLessonsWithMarks[i]} key={`weekDayLesson${i}`}/>
   );
 
   const dateText = date ?

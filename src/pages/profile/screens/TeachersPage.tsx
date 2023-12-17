@@ -1,4 +1,4 @@
-import {FlatList, View} from "react-native";
+import {FlatList, ScrollView, View} from "react-native";
 import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {fetchAllTeachers} from "../../../features/user/store/user-thunks";
@@ -17,13 +17,17 @@ export const TeachersPage = () => {
     status: `Учитель по: ${t.subjects.map(s => s.title.toLowerCase()).join(', ')}`
   }))
 
+  const teacherComponents = teacherItems.map(t =>
+    <TeacherListItem name={t.name} status={t.status} key={t.name}/>
+  )
+
   return (
     <View>
-      <FlatList
-        data={teacherItems}
-        extraData={allTeachers}
-        renderItem={({item}) => <TeacherListItem {...item}/>}
-      />
+      <ScrollView>
+        <View style={{}}>
+          {teacherComponents}
+        </View>
+      </ScrollView>
     </View>
   );
 };

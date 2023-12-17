@@ -9,10 +9,11 @@ import {
 import {fetchClassLessons} from "../../progress/store/progress-thunks";
 import {
   fetchClassLessonsForDay,
-  fetchClassLessonsForWeek,
+  fetchClassLessonsForWeek, fetchLessonWithStudentMarks,
   fetchTeacherLessonsForDay,
-  fetchTeacherLessonsForWeek
+  fetchTeacherLessonsForWeek, updateAbsenceStatus
 } from "./diary-thunks";
+import {updateNoteSeenStatus} from "../../user/store/user-thunks";
 
 export const diarySlice = createSlice({
   name: 'diary',
@@ -20,7 +21,10 @@ export const diarySlice = createSlice({
     currentDay: customDateNow,
     currentWeek: getCurrentWeek(customDateNow),
     dayLessons: [] as LessonData[],
-    weekDaysLessons: [] as LessonData[][]
+    weekDaysLessons: [] as LessonData[][],
+    selectedLesson: {} as LessonWithStudentsMarks,
+    selectedLessonId: 0,
+    selectedStudent: {} as StudentData,
   },
   reducers: {
     setCurrentDay(state, action: PayloadAction<CustomDate>) {
@@ -29,6 +33,13 @@ export const diarySlice = createSlice({
       if (!state?.currentWeek?.find(d =>
         customDateToString(d) === customDateToString(date)
       )) state.currentWeek = getCurrentWeek(date);
+    },
+    setSelectedLessonId(state, action: PayloadAction<number>) {
+      state.selectedLessonId = action.payload;
+      state.selectedLesson = {} as LessonWithStudentsMarks;
+    },
+    setDiarySelectedStudent(state, action: PayloadAction<StudentData>) {
+      state.selectedStudent = action.payload;
     },
   },
   extraReducers: builder => {
@@ -44,9 +55,22 @@ export const diarySlice = createSlice({
     builder.addCase(fetchTeacherLessonsForWeek.fulfilled, (state, action) => {
       state.weekDaysLessons = action.payload.map(day => sortLessonsByTime(day));
     })
+    builder.addCase(fetchLessonWithStudentMarks.fulfilled, (state, action) => {
+      state.selectedLesson = action.payload;
+    })
+    builder.addCase(updateAbsenceStatus.fulfilled, (state, action) => {
+      const absence = action.payload;
+      if (state.selectedLesson.id !== absence.lesson) return;
+      const student = state.selectedLesson.students.find(s =>
+        s.id === absence.student
+      );
+      if (student) student.absence = absence;
+    })
   }
 })
 
 export const {
-  setCurrentDay
+  setCurrentDay,
+  setSelectedLessonId,
+  setDiarySelectedStudent
 } = diarySlice.actions;

@@ -1,4 +1,5 @@
 import {constWeekDayNames, constWeekDayNamesShortened} from "./constants";
+import {Alert, Linking, Platform} from "react-native";
 
 export const sortLessonsByTime = (lessons: LessonData[]) =>
   lessons.sort((a: LessonData, b: LessonData): number => {
@@ -124,3 +125,23 @@ export const numberToFixedLength = (n: number, length: number) => {
   const nullsAmount = length - nString.length;
   return nullsAmount > 0 ? '0'.repeat(nullsAmount) + nString: nString;
 }
+
+export const callNumber = (phone: string) => {
+  console.log('callNumber ----> ', phone);
+  let phoneNumber = phone;
+  if (Platform.OS !== 'android') {
+    phoneNumber = `telprompt:${phone}`;
+  }
+  else  {
+    phoneNumber = `tel:${phone}`;
+  }
+  Linking.canOpenURL(phoneNumber)
+    .then(supported => {
+      if (!supported) {
+        Alert.alert('Phone number is not available');
+      } else {
+        return Linking.openURL(phoneNumber);
+      }
+    })
+    .catch(err => console.log(err));
+};

@@ -11,10 +11,8 @@ interface Props {
 
 export const DiaryLayout = ({children}: Props) => {
   const currentDay = useAppSelector(state => state.diary.currentDay);
-  const monthName = customDateToDayObj(currentDay)
-    .toLocaleString('default', {month: 'long'}).toUpperCase();
-
-  const currentDayString = `${currentDay.weekDayShortName}, ${currentDay.day}.${monthName}`;
+  const currentDayString = customDateToDayObj(currentDay)
+    .toLocaleString('ru-RU',{weekday: 'short', day: 'numeric', month:'long'});
 
   return (
     <View style={{flex: 1}}>

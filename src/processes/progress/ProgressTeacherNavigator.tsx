@@ -5,7 +5,7 @@ import {ChooseStudentPage} from "../../pages/progress/screens/ChooseStudentPage"
 import {navigatorScreenOptions} from "../../shared/lib/constants";
 import {ChooseSubjectPage} from "../../pages/progress/screens/ChooseSubjectPage";
 import ChooseLessonPage from "../../pages/progress/screens/ChooseLessonPage";
-import AddMarkPage from "../../entities/mark/components/AddMarkPage";
+import {AddMarkPage} from "../../entities/mark/components/AddMarkPage";
 
 export type TeacherNavigatorParamList = {
   ChooseSubject: undefined,

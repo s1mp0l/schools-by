@@ -2,6 +2,7 @@ import {API} from "../../../shared/lib/api";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {customDateToString} from "../../../shared/lib/utils";
 import {RootState} from "../../../app/store";
+import {baseApiUrl} from "../../../shared/lib/constants";
 
 interface FetchClassLessonsForDayProps {
   classId: number;
@@ -23,12 +24,17 @@ interface FetchTeacherLessonsForWeekProps {
   dates: string[];
 }
 
+interface FetchUpdateAbsenceProps {
+  lessonId: number;
+  studentId: number;
+}
+
 /** Запрашивает уроки все указанного класса на день. */
 export const fetchClassLessonsForDay = createAsyncThunk<
   LessonData[],
   FetchClassLessonsForDayProps
 >(
-  'progress/fetchClassLessonsForDay',
+  'diary/fetchClassLessonsForDay',
   async (
     fetchData: FetchClassLessonsForDayProps, {getState}
   ) => {
@@ -54,7 +60,7 @@ export const fetchClassLessonsForWeek = createAsyncThunk<
   LessonData[][],
   FetchClassLessonsForWeekProps
 >(
-  'progress/fetchClassLessonsForWeek',
+  'diary/fetchClassLessonsForWeek',
   async (fetchData: FetchClassLessonsForWeekProps
   ) => {
 
@@ -79,7 +85,7 @@ export const fetchTeacherLessonsForDay = createAsyncThunk<
   LessonData[],
   FetchTeacherLessonsForDayProps
 >(
-  'progress/fetchTeacherLessonsForDay',
+  'diary/fetchTeacherLessonsForDay',
   async (
     fetchData: FetchTeacherLessonsForDayProps, {getState}
   ) => {
@@ -105,7 +111,7 @@ export const fetchTeacherLessonsForWeek = createAsyncThunk<
   LessonData[][],
   FetchTeacherLessonsForWeekProps
 >(
-  'progress/fetchTeacherLessonsForWeek',
+  'diary/fetchTeacherLessonsForWeek',
   async (fetchData: FetchTeacherLessonsForWeekProps
   ) => {
 
@@ -123,4 +129,35 @@ export const fetchTeacherLessonsForWeek = createAsyncThunk<
     }
 
     return weekDaysLessons;
+  });
+
+/** Запрашивает уроки все указанного класса на неделю. */
+export const fetchLessonWithStudentMarks = createAsyncThunk<
+  LessonWithStudentsMarks,
+  number
+>(
+  'diary/fetchLessonWithStudentMarks',
+  async (lessonId: number
+  ) => {
+
+    const response = await API.request({
+      path: `lessons/with_students_info/${lessonId}`,
+      method: 'GET',
+    });
+
+    return (await response.json()) as LessonWithStudentsMarks;
+  });
+
+export const updateAbsenceStatus = createAsyncThunk(
+  'diary/updateAbsenceStatus', async (fetchData: FetchUpdateAbsenceProps) => {
+
+    const response = await API.request({
+      path: `absence`,
+      query: {
+        student_id: fetchData.studentId.toString(),
+        lesson_id: fetchData.lessonId.toString()
+      },
+      method: 'POST',
+    });
+    return (await response.json()) as AbsenceData;
   });

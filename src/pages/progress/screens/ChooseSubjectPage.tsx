@@ -33,7 +33,6 @@ export const ChooseSubjectPage = ({navigation}: Props) => {
     useAppSelector((state: RootState) => state.progress);
 
   const studentId = isTeacher ? selectedStudent.id : (data as StudentData).id;
-  console.log(studentId)
   useEffect(() => {
     if (!studentId) return;
     dispatch(fetchAllStudentMarks(studentId));

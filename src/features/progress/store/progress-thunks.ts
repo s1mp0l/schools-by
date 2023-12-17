@@ -217,6 +217,5 @@ export const fetchAddStudentMark = createAsyncThunk<
     });
 
     const response = (await responseSubject.json()) as MarkData;
-    console.log(response);
     return response;
   });
