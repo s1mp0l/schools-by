@@ -1,4 +1,4 @@
-import {StyleSheet, TextInput, TextInputProps, View} from "react-native";
+import {StyleSheet, TextInput, View} from "react-native";
 import {CustomText} from "./CustomText";
 import {CustomColors} from "../lib/constants";
 
@@ -7,13 +7,15 @@ interface Props {
   onChangeText: (text: string) => void;
   placeholder?: string;
   textContentType?: 'password' | 'username';
+  hidePassword?: boolean;
 }
 
-export const CustomInputText = ({label, onChangeText, placeholder, textContentType}: Props) => {
+export const CustomInputText = ({label, onChangeText, placeholder, textContentType, hidePassword}: Props) => {
   return (
     <View style={styles.container}>
       <CustomText text={label} type={'subTitle'} />
       <TextInput
+        secureTextEntry={hidePassword}
         textContentType={textContentType}
         defaultValue={placeholder}
         style={styles.textInput}

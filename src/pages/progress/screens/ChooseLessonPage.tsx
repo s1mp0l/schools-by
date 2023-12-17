@@ -22,7 +22,6 @@ export const ChooseLessonPage = ({navigation}: Props) => {
   const {classLessons, selectedClass, selectedSubject, studentSubjects} =
     useAppSelector(state => state.progress);
   const {isTeacher, data} = useAppSelector(state => state.user);
-  const teacherId = (data as TeacherData).id;
   const dispatch = useAppDispatch();
 
   const lessons = classLessons.filter(l =>
@@ -47,7 +46,7 @@ export const ChooseLessonPage = ({navigation}: Props) => {
 
   return (
     <PageLayout>
-      <FlatList
+      {lessons?.length ? <FlatList
         contentContainerStyle={{gap: 20}}
         data={lessons}
         renderItem={({item}) =>
@@ -55,7 +54,7 @@ export const ChooseLessonPage = ({navigation}: Props) => {
             <CustomText text={item?.date || ''} type={'subTitle'} />
             <DayLesson lesson={{...item, mark: null}} key={item.id} onPressHandler={onPressHandler}/>
           </View>}
-      />
+      /> : <CustomText text={'Нет доступных уроков, по которым ещё не выставлена оценка'} type={'title'}/>}
     </PageLayout>
   );
 };

@@ -42,6 +42,10 @@ export const progressSlice = createSlice({
     builder.addCase(fetchAllStudentMarks.fulfilled, (state, action) => {
       state.studentSubjects = action.payload;
     })
+    builder.addCase(fetchAllStudentMarks.rejected, (state) => {
+      console.log('rejected');
+      state.studentSubjects = [] as SubjectWithYearMarks[];
+    })
     builder.addCase(fetchAddStudentMark.fulfilled, (state, action) => {
       const addedMark = action.payload;
       const addedSubject = state.studentSubjects.find(s =>

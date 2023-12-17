@@ -6,7 +6,13 @@ import {RootState} from "../../app/store";
 import {CustomText} from "../../shared/ui/CustomText";
 
 export const NoteList = () => {
-  const notes = useAppSelector((state: RootState) => state.user.data.user.notes)
+  const {
+    data,
+    parentData,
+    isParent,
+  } = useAppSelector((state: RootState) => state.user);
+
+  const notes = isParent ? parentData.user.notes : data.user.notes;
 
   return (
     <View style={{flex: 1, padding: 10}}>

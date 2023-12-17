@@ -1,4 +1,4 @@
-import {Button, Image} from "react-native";
+import {Button, Image, View} from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import {CustomInputText} from "../../shared/ui/CustomInputText";
 import {PageLayout} from "../../shared/ui/PageLayout";
@@ -10,6 +10,9 @@ import {RootState} from "../../app/store";
 import {CustomColors} from "../../shared/lib/constants";
 import {CustomText} from "../../shared/ui/CustomText";
 import {EntranceStackParamList} from "./EntranceNavigation";
+import {IconButton} from "../../shared/ui/IconButton";
+import HideSvg from '../../../assets/icons/hide.svg';
+import BlindSvg from '../../../assets/icons/blind.svg';
 
 type EntranceNavigationProp = StackNavigationProp<
   EntranceStackParamList,
@@ -21,9 +24,9 @@ type Props = {
 };
 
 export const AuthPage = ({ navigation }: Props) => {
-  const teacher = false;
-  const loginPlaceholder = (teacher ? 'teacher' : 'student') + 'Login1';
-  const passwordPlaceholder = (teacher ? 'teacher' : 'student') + 'Password1';
+  const userType = 'teacher'
+  const loginPlaceholder = userType + 'Login1';
+  const passwordPlaceholder = userType + 'Password1';
 
   const dispatch = useAppDispatch();
   const {data, loading, authError} = useAppSelector((state: RootState) => state.user);
@@ -32,6 +35,7 @@ export const AuthPage = ({ navigation }: Props) => {
   const [password, setPassword] = useState(passwordPlaceholder);
 
   const [errorMessage, setErrorMessage] = useState("");
+  const [hidePassword, setHidePassword] = useState(true);
 
   const authButtonHandler = () => {
     const loginData: LoginData = {
@@ -62,12 +66,21 @@ export const AuthPage = ({ navigation }: Props) => {
         onChangeText={onChangeLogin}
         placeholder={loginPlaceholder}
       />
-      <CustomInputText
-        label={'Пароль'}
-        onChangeText={onChangePassword}
-        placeholder={passwordPlaceholder}
-        textContentType={'password'}
-      />
+      <View style={{gap: 5}}>
+        <CustomInputText
+          label={'Пароль'}
+          onChangeText={onChangePassword}
+          placeholder={passwordPlaceholder}
+          textContentType={'password'}
+          hidePassword={hidePassword}
+        />
+        <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+          <IconButton onPress={() => setHidePassword(prevState => !prevState)}>
+            {hidePassword ? <HideSvg width={30} height={30}/> : <BlindSvg width={30} height={30} /> }
+            <CustomText text={`${hidePassword ? 'Показать' : 'Скрыть'} пароль`} type={'small'} color={CustomColors.darkGray}/>
+          </IconButton>
+        </View>
+      </View>
 
       <CustomText text={errorMessage} type={'subTitle'} color={CustomColors.error}/>
 

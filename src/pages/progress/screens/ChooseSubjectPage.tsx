@@ -9,6 +9,7 @@ import {setSelectedSubject} from "../../../features/progress/store/progress-stor
 import {useEffect} from "react";
 import {fetchAllStudentMarks} from "../../../features/progress/store/progress-thunks";
 import {ProgressCurrentParamList} from "../../../processes/progress/ProgressCurrentNavigator";
+import {CustomText} from "../../../shared/ui/CustomText";
 
 type TeacherNavigationProp = StackNavigationProp<
   TeacherNavigatorParamList,
@@ -25,7 +26,7 @@ type Props = {
 };
 
 export const ChooseSubjectPage = ({navigation}: Props) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   const {data, isTeacher} = useAppSelector((state: RootState) => state.user);
   const {studentSubjects, selectedStudent} =
@@ -53,13 +54,13 @@ export const ChooseSubjectPage = ({navigation}: Props) => {
 
   return (
     <PageLayout>
-      <FlatList
+      {subjects?.length ? <FlatList
         contentContainerStyle={{gap: 20}}
         data={subjects}
         extraData={selectedStudent}
         renderItem={({item, index}) =>
-          <ChooseSubjectItem subject={item} key={`${item.title} ${index}`} onPressHandler={onPressHandler} />}
-      />
+          <ChooseSubjectItem subject={item} key={`${item.title} ${index}`} onPressHandler={onPressHandler}/>}
+      /> : <CustomText text={'Нет оценок ни по одному из предметов'} type={'title'}/>}
     </PageLayout>
   );
 };

@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {ActivityIndicator, Image, StyleSheet, View} from "react-native";
+import {ActivityIndicator, Image, ScrollView, StyleSheet, View} from "react-native";
 import {RootState} from "../../app/store";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {StackNavigationProp} from "@react-navigation/stack";
@@ -13,9 +13,8 @@ import {CustomColors} from "../../shared/lib/constants";
 import {ProfileStackParamList} from "../../processes/profile/ProfileNavigator";
 import {EntranceStackParamList} from "../../processes/entrance/EntranceNavigation";
 import {setUser} from "./store/user-store";
-import TeachersSvg from '../../../assets/icons/teachers.svg';
-import SchoolSvg from '../../../assets/icons/home.svg';
-import AdminsSvg from '../../../assets/icons/users.svg';
+import SchoolButtonsProfile from "./components/SchoolButtonsProfile";
+import {SelectStudent} from "./components/SelectStudent";
 
 
 type ProfileScreenNavigationProp = StackNavigationProp<
@@ -34,9 +33,20 @@ type Props = {
 
 export const User = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
-  const {data, loading} = useAppSelector((state: RootState) => state.user);
+  const {
+    data,
+    parentData,
+    loading,
+    isParent,
+  } = useAppSelector((state: RootState) => state.user);
 
-  const user = data.user;
+  const user = isParent ? parentData.user : data.user;
+  const userType: UserType = user.userType.trim() as UserType;
+  const imageSrc: Record<UserType, any> = {
+    'teacher': require('../../../assets/teacherAvatar.png'),
+    'student': require(`../../../assets/studentAvatar.png`),
+    'parent': require(`../../../assets/parentAvatar1.png`)
+  }
 
   const logOut = () => {
     dispatch(setUser({} as UserUnionData));
@@ -46,9 +56,14 @@ export const User = ({navigation}: Props) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <IconButton onPress={logOut}>
-          <LogOutSvg width={20} height={20}/>
-        </IconButton>
+        <View style={{flexDirection: 'row', justifyContent: 'flex-end', gap: 15}}>
+          <IconButton onPress={() => (navigation as ProfileScreenNavigationProp).navigate('UserNotes')}>
+            <NotesSvg width={30} height={30}/>
+          </IconButton>
+          <IconButton onPress={() => (navigation as ProfileScreenNavigationProp).navigate('SettingsPage')}>
+            <SettingsSvg width={30} height={30}/>
+          </IconButton>
+        </View>
       )
     });
   }, []);
@@ -58,43 +73,29 @@ export const User = ({navigation}: Props) => {
   }
 
   return (
-    <View>
+    <ScrollView>
       <View style={styles.container}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start'}}>
-          <Image source={require('../../../assets/studentAvatar.png')} />
-          <View style={{flexDirection: 'row', justifyContent: 'flex-end', gap: 10}}>
-            <IconButton>
-              <SettingsSvg width={30} height={30}/>
-            </IconButton>
-            <IconButton onPress={() => (navigation as ProfileScreenNavigationProp).navigate('UserNotes')}>
-              <NotesSvg width={30} height={30}/>
-            </IconButton>
-          </View>
+          <Image source={imageSrc[userType]} />
+          <IconButton onPress={logOut}>
+            <LogOutSvg width={30} height={30}/>
+          </IconButton>
         </View>
         <View style={styles.textContainer}>
           <CustomText text={`${user?.firstName} ${user?.lastName}`} type={'main'} color={'white'} />
           <CustomText text={user?.phoneNumber} type={'paragraph'} color={'white'} />
-          <CustomText text={userTypeNameMap.get(user?.userType) ?? ''} type={'paragraph'} color={'white'} />
+          <CustomText text={userTypeNameMap.get(user?.userType) ?? ''} type={'title'} color={'white'} />
         </View>
       </View>
+      {isParent ? <View style={{gap: 20, padding: 10}}>
+        <CustomText text={'Дети'} type={'main'} />
+        <SelectStudent />
+      </View> : <></>}
       <View style={{gap: 20, padding: 10}}>
         <CustomText text={'Школа'} type={'main'} />
-        <View style={{gap: 15}}>
-          <IconButton>
-            <AdminsSvg width={30} height={30}/>
-            <CustomText text={'Администрация'} type={'subTitle'} color={CustomColors.darkGray}/>
-          </IconButton>
-          <IconButton onPress={() => (navigation as ProfileScreenNavigationProp).navigate('TeachersPage')}>
-            <TeachersSvg width={30} height={30}/>
-            <CustomText text={'Учительская'} type={'subTitle'} color={CustomColors.darkGray}/>
-          </IconButton>
-          <IconButton>
-            <SchoolSvg width={30} height={30}/>
-            <CustomText text={'ГУО “Гимназия имени Я. Купалы”'} type={'subTitle'} color={CustomColors.darkGray}/>
-          </IconButton>
-        </View>
+        <SchoolButtonsProfile navigation={navigation as ProfileScreenNavigationProp} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

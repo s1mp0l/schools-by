@@ -1,13 +1,11 @@
 import {View} from "react-native";
 import {DayLesson} from "../../../entities/lesson/components/DayLesson";
-import {CustomText} from "../../../shared/ui/CustomText";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {customDateToDayObj, customDateToString} from "../../../shared/lib/utils";
+import {customDateToString} from "../../../shared/lib/utils";
 import {useEffect} from "react";
 import {
   fetchClassLessonsForDay,
-  fetchClassLessonsForWeek, fetchTeacherLessonsForDay,
-  fetchTeacherLessonsForWeek
+  fetchTeacherLessonsForDay,
 } from "../../../features/diary/store/diary-thunks";
 import {fetchAllStudentMarks} from "../../../features/progress/store/progress-thunks";
 
@@ -32,10 +30,10 @@ export const DayDetailView = () => {
 
   useEffect(() => {
     const studentClassId = (data as StudentData).id;
-    if (!studentSubjects?.length || !studentClassId) {
+    if (!studentSubjects?.length && studentClassId) {
       dispatch(fetchAllStudentMarks(studentClassId));
     }
-  }, [studentSubjects, data]);
+  }, [data]);
 
   const lessonsLength = 8;
 

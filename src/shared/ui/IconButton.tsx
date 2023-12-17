@@ -1,8 +1,7 @@
 import {ReactNode} from 'react';
 import {
-    GestureResponderEvent,
     StyleSheet,
-    TouchableOpacity, ViewStyle
+    TouchableOpacity, View, ViewStyle
 } from "react-native";
 
 interface Props {
@@ -13,8 +12,12 @@ interface Props {
 
 export const IconButton = ({ children, onPress, styles }: Props) => {
     return (
-        <TouchableOpacity onPress={onPress ?? (()=>{})} style={{...styles1?.iconBtn, ...styles}}>
-            {children}
+        <TouchableOpacity onPress={() => {
+            if(onPress) onPress();
+        }}>
+            <View style={{...styles1?.iconBtn, ...styles}}>
+                {children}
+            </View>
         </TouchableOpacity>
     );
 };

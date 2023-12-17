@@ -1,3 +1,5 @@
+type UserType = 'teacher' | 'student' | 'parent';
+
 interface UserData {
   id: number;
   userType: string;

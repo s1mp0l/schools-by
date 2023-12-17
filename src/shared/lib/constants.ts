@@ -1,5 +1,5 @@
 // export const baseApiUrl = 'http://localhost:8080'
-export const baseApiUrl = 'http://localhost:8080'
+export const baseApiUrl = 'http://192.168.0.115:8080'
 
 export const constWeekDayNames = [
   'Воскресенье', 'Понедельник', 'Вторник',
